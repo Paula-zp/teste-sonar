@@ -12,10 +12,14 @@ jobs:
     services:
       sonar:
         image: sonarqube:latest
-        options: --health-cmd="curl -f http://localhost:9000/api/health" --health-interval=10s --health-timeout=5s --health-retries=3
         ports:
           - 9000:9000
-        options: --detach  # para rodar em segundo plano
+        options: > 
+          --health-cmd="curl -f http://localhost:9000/api/health" 
+          --health-interval=10s 
+          --health-timeout=5s 
+          --health-retries=3
+        # O SonarQube vai tentar iniciar em segundo plano, verificando se está ativo
 
     steps:
     - name: Checkout Code
@@ -25,6 +29,11 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: '11'
+
+    - name: Wait for SonarQube to be ready
+      run: |
+        echo "Aguardando o SonarQube inicializar..."
+        sleep 30  # Aguardar 30 segundos para garantir que o SonarQube está pronto
 
     - name: Run SonarQube Scanner
       run: |
