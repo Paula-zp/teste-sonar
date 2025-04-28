@@ -43,7 +43,7 @@ jobs:
           sonarsource/sonar-scanner-cli
 
     - name: Upload SonarQube report as an artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v2  # Atualizado para v2
       with:
         name: sonarqube-report
         path: .scannerwork  # Pasta onde o SonarQube armazena o relatório
